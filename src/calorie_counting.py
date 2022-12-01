@@ -16,7 +16,7 @@ def maxcal(datafile: str) -> int:
     #return max of table
     return max(sumtable)
 
-def top3cal(datafile: str) -> int:
+def topncal(datafile: str,n:int) -> int:
     #Collect values from data text file
     outputtable = []
     with open(datafile) as file:
@@ -32,5 +32,5 @@ def top3cal(datafile: str) -> int:
         else:
             runningsum += int(value)
     sumtable.sort(reverse=True)
-    #find sum of top 3
-    return sumtable[0] + sumtable[1] + sumtable[2]
+    #find sum of top n
+    return sum([sumtable[n] for n in range(n)])
