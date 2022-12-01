@@ -33,4 +33,4 @@ def topncal(datafile: str,n:int) -> int:
             runningsum += int(value)
     sumtable.sort(reverse=True)
     #find sum of top n
-    return sum([sumtable[n] for n in range(n)])
+    return sum(sumtable[:n])
