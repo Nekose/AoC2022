@@ -1,4 +1,4 @@
-def maxcal(datafile):
+def maxcal(datafile: str) -> int:
     #Collect values from data text file
     outputtable = []
     with open(datafile) as file:
@@ -16,7 +16,7 @@ def maxcal(datafile):
     #return max of table
     return max(sumtable)
 
-def top3cal(datafile):
+def top3cal(datafile: str) -> int:
     #Collect values from data text file
     outputtable = []
     with open(datafile) as file:
