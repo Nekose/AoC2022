@@ -1,5 +1,8 @@
 #Oh no, its recursion
 
+sizedict = {}
+
+
 def import_data(datafile: str) -> str:
     commandprompts = []
     with open(datafile) as file:
@@ -33,51 +36,42 @@ class Folder(object):
         return f"Folder called '{self.name}' containing {len(self.files)} files, {len(self.subfolders)} subfolders named {[folder.name for folder in self.subfolders]}," \
                f"and total files size of {self.totalfilesize} elfobytes."
 
-    def __init__(self,name,parentfolder=None,root=False):
+    def __init__(self,name,parentfolder):
         self.parentfolder = parentfolder
         self.subfolders = []
         self.files = []
         self.totalfilesize = 0
         self.name = name
-        self.root = root
 
     def add_file(self,file):
         self.files.append(file)
-        # self._update_totalfilesize()
+        self._update_totalfilesize()
 
     def add_folder(self,name):
         for folder in self.subfolders:
             if folder.name == name:
                 raise DuplicateFolderName
         self.subfolders.append(Folder(name,self))
-        # self._update_totalfilesize()
+        self._update_totalfilesize()
 
-    # def _update_totalfilesize(self):
-    #     totalfromfiles = 0
-    #     totalinfolders = 0
-    #     for file in self.files:
-    #         totalfromfiles += file.filesize
-    #     for folder in self.subfolders:
-    #         totalinfolders += folder.totalfilesize
-    #     self.totalfilesize = totalinfolders + totalfromfiles
+    def _update_totalfilesize(self):
+        self.totalfilesize = sum(x.filesize for x in self.files) + sum(folder.totalfilesize for folder in self.subfolders)
+        global sizedict
+        sizedict[self.name] = self.totalfilesize
 
-
-    def report_subfolders(self):
-        for folder in self.subfolders:
-            if len(self.subfolders) == 0:
-                print("bottom")
-            else:
-                print(folder)
-                return folder.report_subfolders()
+    def report_sizes(self):
+        global sizedict
+        return sizedict
 
 
 class Elf_File(object):
     def __init__(self, name, size):
         self.filesize = size
         self.name = name
+    def __int__(self):
+        return self.filesize
     def __repr__(self):
         return f"File {self.name} - {self.filesize} elfobytes"
-
 
 class DuplicateFolderName(Exception):
     pass
