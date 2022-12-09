@@ -46,11 +46,65 @@ def check_suroundings(grid,row,col,visited):
             south = False
     visited[row][col] = any((north,south,east,west))
 
-def visit_dem_trees(grid,visitedmap):
+def score_surroundings(grid,row,col,score_grid):
+    height = grid[row][col]
+    if row == 0 or row == len(grid)-1:
+        score_grid[row][col] = 0
+        return
+    elif col == 0 or col == len(grid[0])-1:
+        score_grid[row][col] = 0
+        return
+    #look east
+    eastview = 0
+    eastlist = grid[row][col+1:]
+    for value in eastlist:
+        if value >= height:
+            eastview += 1
+            break
+        else:
+            eastview += 1
+    westview = 0
+    westlist = grid[row][:col]
+    westlist.reverse()
+    for value in westlist:
+        if value >= height:
+            westview += 1
+            break
+        else:
+            westview += 1
+    northsouthlist = [x[col] for x in grid]
+    northview = 0
+    northlist = northsouthlist[:row]
+    northlist.reverse()
+    for value in northlist:
+        if value >= height:
+            northview += 1
+            break
+        else:
+            northview += 1
+    southview = 0
+    southlist = northsouthlist[row+1:]
+    for value in southlist:
+        if value >= height:
+            southview += 1
+            break
+        else:
+            southview += 1
+    score_grid[row][col] = northview * southview * eastview * westview
+
+def visit_dem_trees(grid):
+    visitedmap = create_visited_map(grid)
     for row,val in enumerate(grid):
         for col,tree in enumerate(val):
             check_suroundings(grid,row,col,visitedmap)
     return visitedmap
+
+def score_dem_trees(grid):
+    scoredmap = create_visited_map(grid)
+    for row,val in enumerate(grid):
+        for col,tree in enumerate(val):
+            score_surroundings(grid,row,col,scoredmap)
+    return scoredmap
 
 def count_dem_trees(visitedmap):
     trees = 0
@@ -59,6 +113,9 @@ def count_dem_trees(visitedmap):
             if tree == True:
                 trees += 1
     return trees
+
+def max_score_trees(scored_map):
+    return max(max(x for x in row) for row in scored_map)
 
 
 
