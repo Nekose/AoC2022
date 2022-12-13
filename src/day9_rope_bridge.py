@@ -31,6 +31,7 @@ def generate_moves(inputs):
 def generate_moves_with_n_knots(inputs,knots):
     knotslist = [(0,0) for x in range(knots)]
     #move head
+    previoushead = (0,0)
     for dir,num in inputs:
         for x in range(num):
             if dir == "R":
@@ -41,8 +42,8 @@ def generate_moves_with_n_knots(inputs,knots):
                 knotslist[0] += 1
             elif dir == "D":
                 knotslist[0] -= 1
-    #check knots
-    for knot,cordinate in enumerate(knotslist):
+            #check next nots
+            for knotnum,cordinates in enumerate()
 
 
 
